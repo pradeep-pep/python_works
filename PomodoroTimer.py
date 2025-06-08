@@ -4,6 +4,7 @@ import os
 import random
 import time 
 import datetime
+import platform
 
 POMODORO_TIME_DEFAULT = 25
 POMODORO_SHORT_DEFAULT = 5
@@ -48,7 +49,6 @@ def save_file(tasks):
         for task_name, task_desc, status in tasks:
             f.write(f"{task_name}-{task_desc}-{status}\n")
 
-#Task Handling
 def add_task(task_name, task_desc):
     tasks = load_all_tasks()
     TASK_FILE = "PomodoroTask.txt"
@@ -91,6 +91,7 @@ def PomodoroFirstInputMenu(first_input): #3
         first_input = PomodoroFirstInput()
         PomodoroFirstInputMenu(first_input)
 
+#Task for Timer Handling
 def PomodoroMainMenu(): #3a
     print()
     print("Choose Task from your 'Pending Top 10 To-Do list' for which Timer to be set:")
@@ -100,9 +101,13 @@ def PomodoroMainMenu(): #3a
     print("7. Exit")
     print()
     task_choice = PomodoroOperInput()
-    PomodoroMainOper(task_choice, filtered_records) 
+    pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomodoroMainOper(task_choice, filtered_records) 
+    time.sleep(4)
+    clear_console()
+    pomodoro_timer(pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles)
+    
 
-def PomodoroExitMenu(): #3c
+def PomodoroExitMenu(): #3b
     print()
     print("Thank you for using the Pomodoro Timer Application!")
     print("Goodbye!")   
@@ -114,29 +119,33 @@ def PomodoroOperInput(): #3a1
 
 def PomodoroMainOper(task_choice, filtered_records): #3a2
     if task_choice == "1":
-        task_name, task_desc = filtered_records[0][:2]    
-        print(f"You have selected Task: {task_name} - {task_desc}")
-        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomodoroTimerSetting()
-        print(f"pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = {pomodoro_time}, {pomodoro_short}, {pomodoro_long}, {pomodoro_cycles}")
-        print(f"Pomodoro Timer set for {task_name} - {task_desc} with {pomodoro_time} minutes.")
+        task_name, task_desc = filtered_records[0][:2]  
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles)  
     elif task_choice == "2":    
         task_name, task_desc = filtered_records[1][:2]    
-        print(f"You have selected Task: {task_name} - {task_desc}")
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles) 
     elif task_choice == "3":
         task_name, task_desc = filtered_records[2][:2]    
-        print(f"You have selected Task: {task_name} - {task_desc}")
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles) 
     elif task_choice == "4":    
         task_name, task_desc = filtered_records[3][:2]    
-        print(f"You have selected Task: {task_name} - {task_desc}")
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles) 
     elif task_choice == "5":
         task_name, task_desc = filtered_records[4][:2]    
-        print(f"You have selected Task: {task_name} - {task_desc}")
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles) 
     elif task_choice == "6":
         print("You have selected to add a task.")
         task_input = input("Enter add task - [Format: Add Task_Name Task_Description] : ")
         oper_list = ToDoStrOperInput(task_input) 
-        ToDoAddTasks(oper_list)
+        task_name,task_desc = ToDoAddTasks(oper_list)
         print()
+        pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomorodoAssignTask(task_name,task_desc) 
+        return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles)         
     elif task_choice == "7":
         PomodoroExitMenu()
     else:
@@ -144,20 +153,35 @@ def PomodoroMainOper(task_choice, filtered_records): #3a2
         print("Invalid input. Please try again.")
         PomodoroMainMenu()
 
-def ToDoStrOperInput(task_input): 
+def ToDoStrOperInput(task_input): #3a2a
     oper_list = task_input.split() 
     print(oper_list)
     return(oper_list)
 
-def ToDoAddTasks(oper_list): 
+def ToDoAddTasks(oper_list): #3a2b
     if len(oper_list) < 3 or oper_list[0].lower() != "add":
         print("Wrong Input Format- [Please use: Add Task_Name Task_Description] : ")
         return   
     print(f"Task requested to add is: {oper_list[1]}-{oper_list[2:]}")
     task_name, task_desc = oper_list[1], " ".join(oper_list[2:])
     add_task(task_name, task_desc)
- 
-def PomodoroTimerSetting(): 
+    return task_name, task_desc
+
+def PomorodoAssignTask(task_name,task_desc): #3a2c
+    print(f"You have selected Task: {task_name} - {task_desc}")
+    pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles = PomodoroTimerSetting()
+    print()
+    print("The new user set pomodoro timer settings are:")
+    print(f"Pomodoro Time: {pomodoro_time} minutes")
+    print(f"Short Break Time: {pomodoro_short} minutes")   
+    print(f"Long Break Time: {pomodoro_long} minutes")
+    print(f"Pomodoros before Long Break: {pomodoro_cycles}")
+    print()    
+    print(f"Pomodoro Timer set for {task_name} - {task_desc} with {pomodoro_time} minutes.")   
+
+    return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles) 
+
+def PomodoroTimerSetting(): #3a2c1
     print()
     print("The default pomodoro timer settings are:")
     print(f"Pomodoro Time: {POMODORO_TIME_DEFAULT} minutes")
@@ -182,12 +206,24 @@ def PomodoroTimerSetting():
 
     return  (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles)
 
-def PomodoroUserSettings():      
+def PomodoroUserSettings(): #3a2c1a     
     try:
-        pomodoro_time = input("Enter your pomodoro for choosen task: ") 
-        pomodoro_short = input("Enter your short break time: ") 
-        pomodoro_long = input("Enter your long break time: ") 
-        pomodoro_cycles = input("Enter number of pomodoros before a long break: ")
+        pomodoro_time = int(input("Enter your pomodoro for choosen task: "))
+        if pomodoro_time <= 0:
+            raise ValueError("Pomodoro time must be a positive integer.")  
+         
+        pomodoro_short = int(input("Enter your short break time: ")) 
+        if pomodoro_short <= 0: 
+            raise ValueError("Short break time must be a positive integer.") 
+           
+        pomodoro_long = int(input("Enter your long break time: ")) 
+        if pomodoro_long <= 0:
+            raise ValueError("Long break time must be a positive integer.")
+        
+        pomodoro_cycles = int(input("Enter number of pomodoros before a long break: "))
+        if pomodoro_cycles <= 0:
+            raise ValueError("Number of cycles must be a positive integer.")
+        
     except ValueError:
         print("Invalid input. Using default settings.")
         pomodoro_time = POMODORO_TIME_DEFAULT
@@ -197,9 +233,59 @@ def PomodoroUserSettings():
     
     return (pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles)
 
+def clear_console():
+    os.system('cls' if platform.system() == 'Windows' else 'clear')
+
 def PomodoroCurrentTS(): #3d1
     now = datetime.datetime.now()
     return now.strftime("%Y:%m:%d:%H:%M:%S")
+
+def pomodoro_timer(pomodoro_time, pomodoro_short, pomodoro_long, pomodoro_cycles):
+    print(f"Pomodoro Time: {pomodoro_time} minutes")
+    print(f"Short Break Time: {pomodoro_short} minutes")   
+    print(f"Long Break Time: {pomodoro_long} minutes")
+    print(f"Pomodoros before Long Break: {pomodoro_cycles}")
+
+    pomodoro_count = 0
+    while True:
+        clear_console()
+        print(f"🍅 Pomodoro Session {pomodoro_count + 1}")
+        countdown(pomodoro_time)
+        pomodoro_count += 1
+        notify("Work session complete!")
+
+        if pomodoro_count % pomodoro_cycles == 0:
+            print("🛌 Time for a long break!")
+            countdown(pomodoro_long)
+            notify("Long break over!")
+        else:
+            print("☕ Time for a short break!")
+            countdown(pomodoro_short)
+            notify("Short break over!")
+
+        user_input = input("Start next Pomodoro? (y/n): ").strip().lower()
+        if user_input != 'y':
+            print("👋 Session ended. Great job!")
+            break   
+
+def countdown(minutes):
+    total_seconds = minutes * 60
+    while total_seconds:
+        mins, secs = divmod(total_seconds, 60)
+        time_format = f"{mins:02d}:{secs:02d}"
+        print(f"\r⏳ {time_format}", end="")
+        time.sleep(1)
+        total_seconds -= 1
+    print()
+
+def notify(message):
+    print(f"\n🔔 {message}")
+    # For Windows, you can use winsound.Beep
+    if platform.system() == 'Windows':
+        import winsound
+        winsound.Beep(1000, 500)
+    else:
+        print('\a')  # Beep for Unix-like systems
 
 # Main function to start the timer
 PomodoroMain()

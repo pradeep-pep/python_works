@@ -6,3 +6,11 @@ visit-hometown-done
 Watch-Game-pending
 play-Football-pending
 Test-python Pomodoro-pending
+Travel-Program-pending
+Watch-scenery-pending
+new-try-pending
+water-plants today-pending
+try-travelling-pending
+think-logical programming-pending
+correct-logics-pending
+find-bug pgm-pending
