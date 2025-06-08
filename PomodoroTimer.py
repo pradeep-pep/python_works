@@ -1,4 +1,12 @@
 #Pomodoro technique timer
+# This is a terminal-based Pomodoro timer and task manager. It allows users to manage a to-do list, select pending tasks, and run Pomodoro cycles with customizable work and break durations. 
+# - Interactive menu-driven interface for task selection and timer control.
+# - To-do list management with persistent storage in 'PomodoroTask.txt'.
+# - Displays only the top 5 pending tasks for timer assignment.
+# - Allows users to add new tasks directly from the menu.
+# - Customizable Pomodoro, short break, and long break durations, with input validation.
+# - Desktop notification sound at the end of each session (cross-platform support).
+
 import sys
 import os
 import random
