@@ -1,0 +1,53 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DAS111AA.
+       *AUTHOR. @@@@@@@.
+       AUTHOR. @@@@@@@.
+
+       *--------------------------------------------------------------*
+       * Program to calculate and display total sales of a product.   *
+       *--------------------------------------------------------------*       
+       *06 JUNE 2025 @@@@@@@ This is a test module on masking of ID's *
+       *06 JUNE 2025 @@@@@@@ This is a test ZKHABC2 on mask @@@@@@@   *
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       *--------------------------------------------------------------*
+       * Working storage variables                                    *
+       *--------------------------------------------------------------*
+       01 PRODUCT-ID        PIC 9(4).        *> Product identifier
+       01 PRODUCT-NAME      PIC A(20).       *> Product name
+       01 QUANTITY-SOLD     PIC 9(3).        *> Number of units sold
+       01 UNIT-PRICE        PIC 9(4)V99.     *> Price per unit
+       01 TOTAL-SALES       PIC 9(6)V99.     *> Total sales value
+
+       PROCEDURE DIVISION.
+
+       *--------------------------------------------------------------*
+       * Accept product sale details                                  *
+       *--------------------------------------------------------------*
+           DISPLAY "ENTER PRODUCT ID: ".
+           ACCEPT PRODUCT-ID.
+
+           DISPLAY "ENTER PRODUCT NAME: ".
+           ACCEPT PRODUCT-NAME.
+
+           DISPLAY "ENTER QUANTITY SOLD: ".
+           ACCEPT QUANTITY-SOLD.
+
+           DISPLAY "ENTER UNIT PRICE: ".
+           ACCEPT UNIT-PRICE.
+       *ZKH999A----------------------------------------ZKH000A--------*
+       *--------------------------------------------------------------*
+       * Compute total sales                                          *
+       *--------------------------------------------------------------*
+           COMPUTE TOTAL-SALES = QUANTITY-SOLD * UNIT-PRICE.
+
+       *--------------------------------------------------------------*
+       * Display sales report                                         *
+       *--------------------------------------------------------------*
+           DISPLAY "SALES REPORT".
+           DISPLAY "PRODUCT: " PRODUCT-NAME.
+           DISPLAY "TOTAL SALES: " TOTAL-SALES.
+
+           STOP RUN.

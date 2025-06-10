@@ -1,0 +1,54 @@
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. APS111AA.
+       AUTHOR. @@@@@@@.
+       *AUTHOR. @@@@@@@.
+  
+
+       *--------------------------------------------------------------*
+       * This program captures and displays employee details          *
+       * including name, ID, department, and salary.                  *
+       *--------------------------------------------------------------*
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       *--------------------------------------------------------------*
+       * Working storage variables to hold employee details           *
+       *--------------------------------------------------------------*
+       01 EMPLOYEE-NAME     PIC A(30).       *> Employee full name
+       01 EMPLOYEE-ID       PIC 9(5).        *> Numeric employee ID
+       01 DEPARTMENT        PIC A(10).       *> Department code or name
+       01 SALARY            PIC 9(6)V99.     *> Salary with 2 decimal places
+
+       *06 JUNE 2025 @@@@@@@ This is a test module on masking of ID's *
+
+       *--------------------------------------------------------------*
+       PROCEDURE DIVISION.
+       *ZKH769A-------------------------------------------------------*
+       *--------------------------------------------------------------*
+       * Accepting input from user for each field                     *
+       *--------------------------------------------------------------*
+           DISPLAY "ENTER EMPLOYEE NAME: ".
+           ACCEPT EMPLOYEE-NAME.
+
+           DISPLAY "ENTER EMPLOYEE ID: ".
+           ACCEPT EMPLOYEE-ID.
+
+           DISPLAY "ENTER DEPARTMENT: ".
+           ACCEPT DEPARTMENT.
+
+           DISPLAY "ENTER SALARY: ".
+           ACCEPT SALARY.
+       *------------------------ZKH769A-------------------------------*
+       *--------------------------------------------------------------*
+       * Displaying the entered employee details                      *
+       *--------------------------------------------------------------*
+           DISPLAY "EMPLOYEE DETAILS".
+           DISPLAY "NAME: " EMPLOYEE-NAME.
+           DISPLAY "ID: " EMPLOYEE-ID.
+           DISPLAY "DEPARTMENT: " DEPARTMENT.
+           DISPLAY "SALARY: " SALARY.
+
+           STOP RUN.
+
